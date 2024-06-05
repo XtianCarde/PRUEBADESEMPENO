@@ -15,5 +15,5 @@ public class ClassBasicResp {
     private String name;
     private String description;
     private LocalDateTime createdAt;
-    private Boolean active;
+    private Boolean isActive;
 }

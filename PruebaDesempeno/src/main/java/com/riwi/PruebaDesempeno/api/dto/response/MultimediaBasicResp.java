@@ -15,7 +15,6 @@ public class MultimediaBasicResp {
     private Long id;
     private TypeContent typeContent;
     private String url;
-    private LessonBasicResp lessonBasicResp;
     private LocalDateTime createdAt;
-    private Boolean active; 
+    private Boolean isActive; 
 }

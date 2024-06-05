@@ -14,7 +14,6 @@ public class StudentBasicResp {
     private Long id;
     private String name;
     private String email;
-    private ClassBasicResp classBasic;
     private LocalDateTime createdAt;
-    private Boolean active;
+    private Boolean isActive;
 }

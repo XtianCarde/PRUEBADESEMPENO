@@ -15,7 +15,6 @@ public class LessonBasicResp {
     private Long id;
     private String title;
     private String content;
-    private ClassBasicResp classBasicResp;
     private LocalDateTime createdAt;
-    private Boolean active;
+    private Boolean isActive;
 }
