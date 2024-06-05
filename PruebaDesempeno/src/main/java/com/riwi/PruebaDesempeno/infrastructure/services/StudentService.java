@@ -5,11 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.riwi.PruebaDesempeno.api.dto.request.StudentRequest;
+import com.riwi.PruebaDesempeno.api.dto.response.ClassBasicResp;
 import com.riwi.PruebaDesempeno.api.dto.response.ClassOfStudent;
 import com.riwi.PruebaDesempeno.api.dto.response.StudentBasicResp;
+import com.riwi.PruebaDesempeno.domain.entities.ClassEntity;
 import com.riwi.PruebaDesempeno.domain.entities.StudentEntity;
+import com.riwi.PruebaDesempeno.domain.repositories.ClassRepository;
 import com.riwi.PruebaDesempeno.domain.repositories.StudentRepository;
 import com.riwi.PruebaDesempeno.infrastructure.abstract_services.IStudentService;
+import com.riwi.PruebaDesempeno.util.exceptions.BadRequestException;
 
 import lombok.AllArgsConstructor;
 
@@ -19,25 +23,32 @@ public class StudentService implements IStudentService {
     
     @Autowired
     private final StudentRepository studentRepository;
+    @Autowired
+    private final ClassRepository classRepository;
 
     @Override
     public StudentBasicResp create(StudentRequest rq) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        StudentEntity studentEntity = this.requestToEntity(rq);
+
+        return this.entityToBasicResp(this.studentRepository.save(studentEntity));
     }
 
 
     @Override
     public StudentBasicResp get(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        StudentEntity studentEntity = this.find(id);
+        studentEntity.setIsActive(false);
+        return this.entityToBasicResp(this.studentRepository.save(studentEntity));
     }
 
 
     @Override
     public StudentBasicResp update(StudentRequest rq, Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        StudentEntity studentEntity = this.find(id);
+        studentEntity = this.requestToEntity(rq);
+        studentEntity.setId(id);
+
+        return this.entityToBasicResp(this.studentRepository.save(studentEntity));
     }
 
 
@@ -61,15 +72,26 @@ public class StudentService implements IStudentService {
 
         PageRequest pagination = PageRequest.of(page, size);
 
-        return this.studentRepository.findByNameAndIsActive(pagination, name,true)
+        return this.studentRepository.findByNameContainingAndIsActive(pagination, name,true)
                                 .map(this::entityToBasicResp);
     }
 
 
     @Override
     public ClassOfStudent getById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+        return this.entityToClassOfStudent(id);
+    }
+
+    private StudentEntity requestToEntity(StudentRequest request){
+        
+        ClassEntity classEntity = this.findClass(request.getClassId());
+
+        return StudentEntity.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .isActive(request.getIsActive())
+                .classEntity(classEntity)
+                .build();
     }
 
     private StudentBasicResp entityToBasicResp(StudentEntity entity){
@@ -80,5 +102,35 @@ public class StudentService implements IStudentService {
                 .createdAt(entity.getCreatedAt())
                 .isActive(entity.getIsActive())
                 .build();
+    }
+
+    private ClassOfStudent entityToClassOfStudent(Long id){
+        StudentEntity entity = this.find(id);
+        ClassBasicResp classBasicResp = ClassBasicResp.builder()
+                        .id(entity.getClassEntity().getId())
+                        .createdAt(entity.getClassEntity().getCreatedAt())
+                        .description(entity.getClassEntity().getDescription())
+                        .name(entity.getClassEntity().getName())
+                        .isActive(entity.getClassEntity().getIsActive())
+                        .build();
+
+        return ClassOfStudent.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .createdAt(entity.getCreatedAt())
+                .isActive(entity.getIsActive())
+                .classBasicResp(classBasicResp)
+                .build();
+    }
+
+    private StudentEntity find(Long id){
+        return this.studentRepository.findById(id)
+                                .orElseThrow(() -> new BadRequestException("No hay estudiantes por este numero"));
+    }
+
+    private ClassEntity findClass(Long id){
+        return this.classRepository.findById(id)
+                            .orElseThrow(() -> new BadRequestException("La clase por el id suministrado no se encuentra"));
     }
 }

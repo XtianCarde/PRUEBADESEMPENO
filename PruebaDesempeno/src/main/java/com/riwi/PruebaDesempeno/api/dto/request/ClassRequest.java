@@ -1,6 +1,7 @@
 package com.riwi.PruebaDesempeno.api.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,6 @@ public class ClassRequest {
     @NotBlank(message = "La descripcion es requerida")
     @Size(min = 10,message = "La descripción requiere como minimo 10 caracteres")
     private String description;
-    @NotBlank(message = "El estado de la clase es requerido")
+    @NotNull(message = "El estado de la clase es requerido")
     private Boolean isActive;
 }
