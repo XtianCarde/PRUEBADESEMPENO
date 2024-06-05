@@ -21,8 +21,9 @@ public class ClassService implements IClassService {
     private final ClassRepository classRepository;
     @Override
     public ClassBasicResp create(ClassRequest rq) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+        ClassEntity entity = this.requestToClassEntity(rq);
+
+        return this.entityToBasicResp(this.classRepository.save(entity));
     }
 
     @Override
@@ -59,6 +60,15 @@ public class ClassService implements IClassService {
                     .description(entity.getDescription())
                     .createdAt(entity.getCreatedAt())
                     .isActive(entity.getIsActive())
+                    .build();
+    }
+
+    public ClassEntity requestToClassEntity(ClassRequest request){
+
+        return ClassEntity.builder()
+                    .description(request.getDescription())
+                    .isActive(request.getIsActive())
+                    .name(request.getName())
                     .build();
     }
 
