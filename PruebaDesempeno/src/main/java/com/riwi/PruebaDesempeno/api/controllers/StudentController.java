@@ -50,7 +50,7 @@ public class StudentController {
         return ResponseEntity.ok(this.studentService.get(id));
     }
 
-    @PutMapping
+    @PutMapping(path = "/{id}")
     public ResponseEntity<StudentBasicResp> update(@Validated @RequestBody StudentRequest request,@PathVariable Long id){
         return ResponseEntity.ok(this.studentService.update(request, id));
     }
