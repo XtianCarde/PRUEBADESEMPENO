@@ -44,8 +44,11 @@ public class StudentService implements IStudentService {
 
     @Override
     public StudentBasicResp update(StudentRequest rq, Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        StudentEntity studentEntity = this.find(id);
+        studentEntity = this.requestToEntity(rq);
+        studentEntity.setId(id);
+
+        return this.entityToBasicResp(this.studentRepository.save(studentEntity));
     }
 
 
@@ -69,7 +72,7 @@ public class StudentService implements IStudentService {
 
         PageRequest pagination = PageRequest.of(page, size);
 
-        return this.studentRepository.findByNameAndIsActive(pagination, name,true)
+        return this.studentRepository.findByNameContainingAndIsActive(pagination, name,true)
                                 .map(this::entityToBasicResp);
     }
 

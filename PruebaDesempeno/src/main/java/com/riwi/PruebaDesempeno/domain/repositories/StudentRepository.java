@@ -8,5 +8,5 @@ import com.riwi.PruebaDesempeno.domain.entities.StudentEntity;
 
 @Repository
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
-    Page<StudentEntity> findByNameAndIsActive(Pageable pageable, String name, Boolean isActive); 
+    Page<StudentEntity> findByNameContainingAndIsActive(Pageable pageable, String name, Boolean isActive); 
 }

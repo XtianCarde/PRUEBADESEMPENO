@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,5 +48,10 @@ public class StudentController {
     @PatchMapping(path = "/{id}/disable")
     public ResponseEntity<StudentBasicResp> disableStudent(@PathVariable Long id){
         return ResponseEntity.ok(this.studentService.get(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<StudentBasicResp> update(@Validated @RequestBody StudentRequest request,@PathVariable Long id){
+        return ResponseEntity.ok(this.studentService.update(request, id));
     }
 }
