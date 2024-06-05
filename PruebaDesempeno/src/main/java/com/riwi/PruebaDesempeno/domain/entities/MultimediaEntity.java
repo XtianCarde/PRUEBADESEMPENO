@@ -36,7 +36,7 @@ public class MultimediaEntity {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean isActive;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "lesson_id", referencedColumnName = "id")
