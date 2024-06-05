@@ -36,8 +36,9 @@ public class StudentService implements IStudentService {
 
     @Override
     public StudentBasicResp get(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        StudentEntity studentEntity = this.find(id);
+        studentEntity.setIsActive(false);
+        return this.entityToBasicResp(this.studentRepository.save(studentEntity));
     }
 
 
