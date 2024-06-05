@@ -38,7 +38,7 @@ public class LessonEntity {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean isActive;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id", referencedColumnName = "id")

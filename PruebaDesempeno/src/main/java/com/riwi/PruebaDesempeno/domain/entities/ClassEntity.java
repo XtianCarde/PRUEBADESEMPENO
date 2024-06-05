@@ -36,7 +36,7 @@ public class ClassEntity {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean isActive;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -50,7 +50,7 @@ public class ClassEntity {
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER,
     cascade = CascadeType.ALL,
-    mappedBy = "lessonEntity",
+    mappedBy = "classEntity",
     orphanRemoval = false)
     private List<LessonEntity> lessons;
 }

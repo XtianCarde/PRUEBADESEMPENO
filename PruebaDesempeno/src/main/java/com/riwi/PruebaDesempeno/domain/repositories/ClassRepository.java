@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.riwi.PruebaDesempeno.domain.entities.ClassEntity;
 
 @Repository
-public interface ClassRepositories extends JpaRepository<ClassEntity, Long> {
+public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
     
 }
