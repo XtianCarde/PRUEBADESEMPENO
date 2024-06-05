@@ -5,11 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.riwi.PruebaDesempeno.api.dto.request.StudentRequest;
+import com.riwi.PruebaDesempeno.api.dto.response.ClassBasicResp;
 import com.riwi.PruebaDesempeno.api.dto.response.ClassOfStudent;
 import com.riwi.PruebaDesempeno.api.dto.response.StudentBasicResp;
+import com.riwi.PruebaDesempeno.domain.entities.ClassEntity;
 import com.riwi.PruebaDesempeno.domain.entities.StudentEntity;
 import com.riwi.PruebaDesempeno.domain.repositories.StudentRepository;
 import com.riwi.PruebaDesempeno.infrastructure.abstract_services.IStudentService;
+import com.riwi.PruebaDesempeno.util.exceptions.BadRequestException;
 
 import lombok.AllArgsConstructor;
 
@@ -68,8 +71,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public ClassOfStudent getById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+        return this.entityToClassOfStudent(id);
     }
 
     private StudentBasicResp entityToBasicResp(StudentEntity entity){
@@ -80,5 +82,30 @@ public class StudentService implements IStudentService {
                 .createdAt(entity.getCreatedAt())
                 .isActive(entity.getIsActive())
                 .build();
+    }
+
+    private ClassOfStudent entityToClassOfStudent(Long id){
+        StudentEntity entity = this.find(id);
+        ClassBasicResp classBasicResp = ClassBasicResp.builder()
+                        .id(entity.getClassEntity().getId())
+                        .createdAt(entity.getClassEntity().getCreatedAt())
+                        .description(entity.getClassEntity().getDescription())
+                        .name(entity.getClassEntity().getName())
+                        .isActive(entity.getClassEntity().getIsActive())
+                        .build();
+
+        return ClassOfStudent.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .createdAt(entity.getCreatedAt())
+                .isActive(entity.getIsActive())
+                .classBasicResp(classBasicResp)
+                .build();
+    }
+
+    private StudentEntity find(Long id){
+        return this.studentRepository.findById(id)
+                                .orElseThrow(() -> new BadRequestException("No hay estudiantes por este numero"));
     }
 }
