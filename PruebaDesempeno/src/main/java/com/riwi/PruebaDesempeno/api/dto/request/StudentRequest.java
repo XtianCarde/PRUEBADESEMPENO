@@ -29,6 +29,6 @@ public class StudentRequest {
     @NotNull(message = "El id de la clase es requerido")
     @Min(value = 1, message = "El id debe ser mayor que 0")
     private Long classId;
-    @NotBlank(message = "El estado del estudiante es requerido")
+    @NotNull(message = "El estado del estudiante es requerido")
     private Boolean isActive;
 }
