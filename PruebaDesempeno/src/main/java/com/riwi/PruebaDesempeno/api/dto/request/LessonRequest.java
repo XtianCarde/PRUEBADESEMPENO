@@ -25,5 +25,5 @@ public class LessonRequest {
     @Min(value = 1, message = "El id debe ser mayor que 0")
     private Long classId;
     @NotBlank(message = "El estado de la leccion es requerido")
-    private Boolean active;
+    private Boolean isActive;
 }

@@ -20,5 +20,5 @@ public class ClassRequest {
     @Size(min = 10,message = "La descripción requiere como minimo 10 caracteres")
     private String description;
     @NotBlank(message = "El estado de la clase es requerido")
-    private Boolean active;
+    private Boolean isActive;
 }

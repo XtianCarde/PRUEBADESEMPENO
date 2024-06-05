@@ -26,5 +26,5 @@ public class MultimediaRequest {
     @Min(value = 1, message = "El id de la leccion es requerido")
     private Long lessonId;
     @NotBlank(message = "El estado del estudiante es requerido")
-    private Boolean active;
+    private Boolean isActive;
 }
